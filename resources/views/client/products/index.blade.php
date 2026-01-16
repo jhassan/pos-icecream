@@ -4,7 +4,16 @@
 
 @section('content')
 <div class="row">
-
+    <div class="col-md-1 mb-2">
+        <span class="badge rounded-pill text-bg-success category-link" data-category="all" style="cursor: pointer;">All</span>
+    </div>
+    @foreach($categories as $category)
+        <div class="col-md-1 mb-2">
+            <span class="badge rounded-pill text-bg-primary category-link" style="cursor: pointer;" data-category="{{ $category->id }}">{{ $category->name }}</span>
+        </div>
+    @endforeach
+</div>
+<div class="row">
     {{-- LEFT SIDE: Products --}}
     <div class="col-md-7" id="product-area">
         @include('client.products._products')
@@ -36,10 +45,30 @@
     </div>
 
 </div>
+<iframe id="printFrame" style="display:none;"></iframe>
+
 @endsection
 
 @push('scripts')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
+$(document).on('click', '.category-link', function (e) {
+    e.preventDefault();
+
+    let categoryId = $(this).data('category');
+    $('.category-link').removeClass('active');
+    $(this).addClass('active');
+
+    $.ajax({
+        url: "{{ route('client.products.by.category') }}",
+        type: "GET",
+        data: { category_id: categoryId },
+        success: function (html) {
+            $('#product-area').html(html);
+        }
+    });
+
+});
 let cart = {};
 
 function renderInvoice() {
@@ -102,11 +131,31 @@ document.addEventListener('click', function (e) {
 });
 
 
+// document.getElementById('saveInvoice').addEventListener('click', function () {
+//     fetch("{{ route('client.invoice.store') }}", {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type':'application/json',
+//             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+//         },
+//         body: JSON.stringify({
+//             items: cart,
+//             total: parseFloat(document.getElementById('grandTotal').innerText)
+//         })
+//     })
+//     .then(res => res.json())
+//     .then(data => {
+//         window.open(`/client/invoice/print/${data.invoice_id}`);
+//         cart = {};
+//         renderInvoice();
+//     });
+// });
 document.getElementById('saveInvoice').addEventListener('click', function () {
+
     fetch("{{ route('client.invoice.store') }}", {
         method: 'POST',
         headers: {
-            'Content-Type':'application/json',
+            'Content-Type': 'application/json',
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
         body: JSON.stringify({
@@ -116,10 +165,24 @@ document.getElementById('saveInvoice').addEventListener('click', function () {
     })
     .then(res => res.json())
     .then(data => {
-        window.open(`/client/invoice/print/${data.invoice_id}`);
+
+        // Load print page in iframe
+        let iframe = document.getElementById('printFrame');
+        iframe.src = `/client/invoice/print/${data.invoice_id}`;
+
+        iframe.onload = function () {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+        };
+
+        // Reset invoice
         cart = {};
         renderInvoice();
+    })
+    .catch(error => {
+        console.error('Invoice save failed:', error);
     });
+
 });
 </script>
 @endpush

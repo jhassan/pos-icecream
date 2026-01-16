@@ -31,7 +31,7 @@
                 <a class="nav-link text-white" href="/client/products">Products</a>
             </li>
 
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link active category-link text-white" href="#" data-category="all">All</a>
             </li>
             @foreach($categories as $category)
@@ -40,7 +40,7 @@
                         {{ $category->name }}
                     </a>
                 </li>
-            @endforeach
+            @endforeach --}}
 
         </ul>
 

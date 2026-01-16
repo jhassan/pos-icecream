@@ -32,12 +32,15 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'required|boolean',
         ]);
 
         Category::create($request->all());
 
-        return redirect()->back()->with('success', 'Category added');
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Category created successfully');
     }
 
     /**
@@ -53,6 +56,8 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
+        $category = Category::findOrFail($id);
+
         return view('admin.categories.edit', compact('category'));
     }
 
@@ -69,7 +74,7 @@ class CategoryController extends Controller
 
         $category->update($request->all());
 
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully');
+        return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully');
     }
 
     /**
@@ -79,6 +84,6 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
+        return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully');
     }
 }

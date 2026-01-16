@@ -39,7 +39,7 @@
                 <input type="number" step="0.01" name="sale_price" value="{{ old('sale_price', $product->sale_price) }}" class="form-control">
             </div>
 
-            <div class="mb-3">
+            {{-- <div class="mb-3">
                 <label>Purchase Price</label>
                 <input type="number" step="0.01" name="purchase_price" value="{{ old('purchase_price', $product->purchase_price) }}" class="form-control">
             </div>
@@ -47,7 +47,7 @@
             <div class="mb-3">
                 <label>Stock Quantity</label>
                 <input type="number" name="stock_quantity" value="{{ old('stock_quantity', $product->stock_quantity) }}" class="form-control">
-            </div>
+            </div> --}}
 
             <div class="mb-3">
                 <label>Description</label>

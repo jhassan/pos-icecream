@@ -38,7 +38,7 @@ class ProductController extends Controller
             'name' => 'required',
             'category_id' => 'required',
             'sale_price' => 'required|numeric',
-            'purchase_price' => 'required|numeric',
+            // 'purchase_price' => 'required|numeric',
         ]);
 
         Product::create($request->all());
@@ -74,8 +74,8 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'sale_price' => 'required|numeric|min:0',
-            'purchase_price' => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
+            // 'purchase_price' => 'required|numeric|min:0',
+            // 'stock_quantity' => 'required|integer|min:0',
         ]);
 
         $product->update($request->all());

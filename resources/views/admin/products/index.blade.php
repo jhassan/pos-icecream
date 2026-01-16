@@ -14,7 +14,13 @@
 
         <table class="table table-bordered">
             <tr>
-                <th>#</th><th>Name</th><th>Category</th><th>Sale Price</th><th>Purchase Price</th><th>Stock</th><th>Actions</th>
+                <th>#</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Sale Price</th>
+                {{-- <th>Purchase Price</th>
+                <th>Stock</th> --}}
+                <th>Actions</th>
             </tr>
             @foreach($products as $product)
             <tr>
@@ -22,8 +28,8 @@
                 <td>{{ $product->name }}</td>
                 <td>{{ $product->category->name }}</td>
                 <td>{{ $product->sale_price }}</td>
-                <td>{{ $product->purchase_price }}</td>
-                <td>{{ $product->stock_quantity }}</td>
+                {{-- <td>{{ $product->purchase_price }}</td>
+                <td>{{ $product->stock_quantity }}</td> --}}
                 <td>
                     <a href="{{ route('admin.products.edit',$product->id) }}" class="btn btn-sm btn-warning">Edit</a>
                     <form action="{{ route('admin.products.destroy',$product->id) }}" method="POST" style="display:inline-block" onsubmit="return confirm('Delete?');">
