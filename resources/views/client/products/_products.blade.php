@@ -1,6 +1,5 @@
 {{-- LEFT SIDE: Products --}}
 @foreach($categories as $category)
-    <h5 class="mt-3">{{ $category->name }}</h5>
     <div class="row">
         @foreach($category->products as $product)
             <div class="col-md-4 mb-3">
